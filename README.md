@@ -1,6 +1,4 @@
-# gestion-ecole
-
-Application de gestion d’une école d’ingénierie
+# Application de gestion d’une école d’ingénierie
 
 L’école possède plusieurs étudiants, niveaux, filières, classes, modules dont chaque module on
 trouve plusieurs matières (chaque matière possède un coefficient), salles, professeurs (permanent
