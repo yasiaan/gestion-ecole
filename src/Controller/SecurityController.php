@@ -12,7 +12,7 @@ class SecurityController extends AbstractController
      */
     public function index()
     {
-        return $this->render('security/index.html.twig');
+        return $this->render('etudiant/index.html.twig');
     }
 
     /**
@@ -29,6 +29,6 @@ class SecurityController extends AbstractController
     public function registration()
     {
 
-        return $this->render('security/index.html.twig');
+        return $this->render('security/registration.html.twig');
     }
 }
