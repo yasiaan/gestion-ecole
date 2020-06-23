@@ -28,9 +28,9 @@ class Responsable
     private $prenom;
 
     /**
-     * @ORM\OneToOne(targetEntity=Compte::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=User::class, mappedBy="responsable", cascade={"persist", "remove"})
      */
-    private $compte;
+    private $user;
 
     public function getId(): ?int
     {
@@ -61,14 +61,20 @@ class Responsable
         return $this;
     }
 
-    public function getCompte(): ?Compte
+    public function getUser(): ?User
     {
-        return $this->compte;
+        return $this->user;
     }
 
-    public function setCompte(?Compte $compte): self
+    public function setUser(?User $user): self
     {
-        $this->compte = $compte;
+        $this->user = $user;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newResponsable = null === $user ? null : $this;
+        if ($user->getResponsable() !== $newResponsable) {
+            $user->setResponsable($newResponsable);
+        }
 
         return $this;
     }

@@ -14,7 +14,7 @@
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <span class="navbar-brand text-success">INSEA</span>
+            <a href="http://www.insea.ac.ma" target="_blank"><span class="navbar-brand text-success">INSEA</span></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -22,19 +22,26 @@
             <div class="collapse navbar-collapse" id="navbarColor03">
                 <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Accueil</a>
+                    <a class="nav-link" href="{{ path('responsable_accueil') }}">Accueil</a>
                 </li>
+                {% if app.user %}
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Étudiant</a>
+                    <a class="nav-link" href="">Étudiant</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Professeur</a>
                 </li>
                 </ul>
                 <form class="form-inline my-2 my-lg-0">
-                    <a class="nav-link text-success my-2 my-sm-0" href="{{ path('security_login') }}">Se connecter</a>
-                    <a class="nav-link text-info my-2 my-sm-0" href="#">S'inscrire</a>
+                    <a class="nav-link text-info my-2 my-sm-0" href="{{ path('security_logout') }}">Se deconnecter</a>
                 </form>
+                {% else %}
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <a class="nav-link text-success my-2 my-sm-0" href="{{ path('security_login') }}">Se connecter</a>
+                    <a class="nav-link text-info my-2 my-sm-0" href="{{ path('security_registration') }}">S'inscrire</a>
+                </form>
+                {% endif %}
             </div>
          </nav>
         {% block body %}{% endblock %}

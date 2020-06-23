@@ -35,14 +35,14 @@ class Professeur
     private $age;
 
     /**
-     * @ORM\OneToOne(targetEntity=Compte::class, cascade={"persist", "remove"})
-     */
-    private $compte;
-
-    /**
      * @ORM\OneToMany(targetEntity=Element::class, mappedBy="professeur")
      */
     private $elements;
+
+    /**
+     * @ORM\OneToOne(targetEntity=User::class, mappedBy="professeur", cascade={"persist", "remove"})
+     */
+    private $user;
 
     public function __construct()
     {
@@ -90,18 +90,6 @@ class Professeur
         return $this;
     }
 
-    public function getCompte(): ?Compte
-    {
-        return $this->compte;
-    }
-
-    public function setCompte(?Compte $compte): self
-    {
-        $this->compte = $compte;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Element[]
      */
@@ -128,6 +116,24 @@ class Professeur
             if ($element->getProfesseur() === $this) {
                 $element->setProfesseur(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newProfesseur = null === $user ? null : $this;
+        if ($user->getProfesseur() !== $newProfesseur) {
+            $user->setProfesseur($newProfesseur);
         }
 
         return $this;

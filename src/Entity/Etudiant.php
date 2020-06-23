@@ -2,11 +2,24 @@
 
 namespace App\Entity;
 
-use App\Repository\EtudiantRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\EtudiantRepository;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=EtudiantRepository::class)
+ * @UniqueEntity(
+ *  fields={"cin"},
+ *  message="Ce code est déjà pris !"
+ * )
+ * @UniqueEntity(
+ *  fields={"cne"},
+ *  message="Ce code est déjà pris !"
+ * )
+ * @UniqueEntity(
+ *  fields={"tel_pere"},
+ *  message="Ce numero est déjà pris !"
+ * )
  */
 class Etudiant
 {
@@ -53,12 +66,6 @@ class Etudiant
     private $tel_pere;
 
     /**
-     * @ORM\OneToOne(targetEntity=Compte::class, inversedBy="etudiant", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $compte;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Cycle::class, inversedBy="etudiants")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -73,6 +80,16 @@ class Etudiant
      * @ORM\ManyToOne(targetEntity=Filiere::class, inversedBy="etudiants")
      */
     private $filiere;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Niveau::class, inversedBy="etudiants")
+     */
+    private $niveau;
+
+    /**
+     * @ORM\OneToOne(targetEntity=User::class, mappedBy="etudiant", cascade={"persist", "remove"})
+     */
+    private $user;
 
     public function getId(): ?int
     {
@@ -163,18 +180,6 @@ class Etudiant
         return $this;
     }
 
-    public function getCompte(): ?Compte
-    {
-        return $this->compte;
-    }
-
-    public function setCompte(Compte $compte): self
-    {
-        $this->compte = $compte;
-
-        return $this;
-    }
-
     public function getCycle(): ?Cycle
     {
         return $this->cycle;
@@ -210,4 +215,35 @@ class Etudiant
 
         return $this;
     }
+
+    public function getNiveau(): ?Niveau
+    {
+        return $this->niveau;
+    }
+
+    public function setNiveau(?Niveau $niveau): self
+    {
+        $this->niveau = $niveau;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newEtudiant = null === $user ? null : $this;
+        if ($user->getEtudiant() !== $newEtudiant) {
+            $user->setEtudiant($newEtudiant);
+        }
+
+        return $this;
+    }
+    
 }
